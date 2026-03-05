@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1,
+    "slug": "ai-cms-design",
+    "title": "AI 原生 CMS 架构设计",
+    "content": "围绕轻量核心、模块化扩展、SEO/GEO 自动化构建的新一代 CMS 设计。",
+    "author": "APTCMS Team",
+    "published_at": "2026-01-01 10:00:00"
+  },
+  {
+    "id": 2,
+    "slug": "lightweight-cms-performance",
+    "title": "轻量 CMS 的性能优化实践",
+    "content": "通过缓存优先、SQL 显式和模板编译，实现高性能和低资源占用。",
+    "author": "APTCMS Team",
+    "published_at": "2026-01-03 14:00:00"
+  },
+  {
+    "id": 3,
+    "slug": "seo-geo-automation",
+    "title": "SEO 与 GEO 自动化策略",
+    "content": "自动生成标题、描述、结构化数据和 AI 可读接口，提升收录与理解能力。",
+    "author": "APTCMS Team",
+    "published_at": "2026-01-05 09:30:00"
+  }
+]

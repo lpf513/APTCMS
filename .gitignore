@@ -1,0 +1,8 @@
+/cache/*.php
+/cache/data_*.json
+/vendor/
+/.idea/
+.DS_Store
+
+/cache/audit.log
+/cache/rate_*.json

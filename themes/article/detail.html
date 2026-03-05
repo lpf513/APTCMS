@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{$seo_title}</title>
+  <meta name="description" content="{$seo_description}">
+  <link rel="canonical" href="{$canonical}">
+  <script type="application/ld+json">{$json_ld|raw}</script>
+</head>
+<body>
+  <article>
+    <h1>{$title}</h1>
+    <p>作者：{$author} | 发布时间：{$published_at}</p>
+    <div>{$content}</div>
+  </article>
+
+  <section>
+    <h2>AI 摘要</h2>
+    <p>{ai_summary /}</p>
+  </section>
+
+  <section>
+    <h2>相关推荐</h2>
+    <ul>
+      {ai_related limit="5" /}
+    </ul>
+  </section>
+</body>
+</html>

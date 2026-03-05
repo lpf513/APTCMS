@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><title>{$title}</title></head>
+<body>
+<h1>{$title}</h1>
+<p><a href="/admin/model/index">返回模型列表</a></p>
+<table border="1" cellpadding="8">
+  <thead><tr><th>字段</th><th>类型</th><th>控件预览</th></tr></thead>
+  <tbody>
+  {loop items="$controls" as="row"}
+    <tr>
+      <td>{$row.field}</td>
+      <td>{$row.type}</td>
+      <td>{$row.html|raw}</td>
+    </tr>
+  {/loop}
+  </tbody>
+</table>
+</body>
+</html>

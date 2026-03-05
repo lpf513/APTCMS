@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><title>{$title}</title></head>
+<body>
+<h1>{$title}</h1>
+<p><a href="{$return_url}">返回列表</a></p>
+{if $error != ''}
+  <p style="color:red;">{$error}</p>
+{/if}
+<form method="post">
+  <input type="hidden" name="_csrf" value="{$_csrf}">
+  <input type="hidden" name="_return" value="{$return_url}">
+  {if $slug == ''}
+    <p>Slug: <input type="text" name="slug" required></p>
+  {else}
+    <p>Slug: {$slug}</p>
+  {/if}
+  <p>标题: <input type="text" name="title" value="{$article_title}" required></p>
+  <p>作者: <input type="text" name="author" value="{$author}" required></p>
+  <p>发布时间: <input type="text" name="published_at" value="{$published_at}" required></p>
+  <p>状态:
+    <select name="status">
+      <option value="1" {if $status == 1}selected{/if}>已发布</option>
+      <option value="0" {if $status == 0}selected{/if}>草稿</option>
+    </select>
+  </p>
+  <p>内容:<br><textarea name="content" rows="10" cols="80" required>{$article_content}</textarea></p>
+  <p><button type="submit">保存</button></p>
+</form>
+</body>
+</html>
