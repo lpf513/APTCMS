@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><title>上传中心</title></head>
+<body>
+  <h1>上传中心</h1>
+  <p><a href="/admin/dashboard/index">返回后台</a></p>
+  {if $result != ''}
+    <p>{$result}</p>
+  {/if}
+  <form method="post" action="/admin/upload/index" enctype="multipart/form-data">
+    <input type="hidden" name="_csrf" value="{$_csrf}">
+    <p><input type="file" name="file" required></p>
+    <p><button type="submit">上传</button></p>
+  </form>
+  <p>允许：jpg/jpeg/png/webp/gif/pdf/txt</p>
+</body>
+</html>

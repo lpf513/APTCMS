@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><title>{$title}</title></head>
+<body>
+<h1>{$title}</h1>
+<p><a href="/admin/dashboard/index">返回后台</a></p>
+<form method="get" action="/admin/audit/index">
+  <label>事件：<input type="text" name="event" value="{$event}"></label>
+  <label>IP：<input type="text" name="ip" value="{$ip}"></label>
+  <label>关键词：<input type="text" name="q" value="{$query}"></label>
+  <label>条数：
+    <select name="limit">
+      <option value="50" {if $limit == '50'}selected{/if}>50</option>
+      <option value="100" {if $limit == '100'}selected{/if}>100</option>
+      <option value="200" {if $limit == '200'}selected{/if}>200</option>
+      <option value="500" {if $limit == '500'}selected{/if}>500</option>
+    </select>
+  </label>
+  <button type="submit">筛选</button>
+  <a href="/admin/audit/export?{$export_query}">导出 CSV</a>
+</form>
+<table border="1" cellpadding="8">
+  <thead><tr><th>时间</th><th>事件</th><th>IP</th><th>上下文</th></tr></thead>
+  <tbody>
+  {loop items="$rows" as="row"}
+    <tr>
+      <td>{$row.time}</td>
+      <td>{$row.event}</td>
+      <td>{$row.ip}</td>
+      <td>{$row.context|raw}</td>
+    </tr>
+  {/loop}
+  </tbody>
+</table>
+</body>
+</html>

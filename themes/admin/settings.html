@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><title>{$title}</title></head>
+<body>
+  <h1>{$title}</h1>
+  <p><a href="/admin/dashboard/index">返回后台</a></p>
+  {if $notice == 'saved'}
+    <p style="color:green;">配置已保存，刷新页面后生效。</p>
+  {/if}
+  <form method="post" action="/admin/setting/save">
+    <input type="hidden" name="_csrf" value="{$_csrf}">
+    <p>站点名称：<input type="text" name="name" value="{$name}" required></p>
+    <p>基础 URL：<input type="text" name="base_url" value="{$base_url}" placeholder="https://example.com"></p>
+    <p>AI 默认分页：<input type="number" name="api_default_page_size" min="1" max="1000" value="{$api_default_page_size}" required></p>
+    <p>AI 最大分页：<input type="number" name="api_max_page_size" min="1" max="1000" value="{$api_max_page_size}" required></p>
+    <p>AI 接口限流阈值：<input type="number" name="api_rate_limit" min="1" max="5000" value="{$api_rate_limit}" required></p>
+    <p>后台登录限流阈值：<input type="number" name="security_login_rate_limit" min="1" max="100" value="{$security_login_rate_limit}" required></p>
+    <p>后台登录限流窗口（秒）：<input type="number" name="security_login_rate_window" min="30" max="86400" value="{$security_login_rate_window}" required></p>
+    <p>
+      后台 IP 白名单（每行一条，支持 CIDR，如 10.0.0.0/24；留空表示不限制）：<br>
+      <textarea name="security_admin_ip_allowlist" rows="6" cols="60">{$security_admin_ip_allowlist}</textarea>
+    </p>
+    <p><button type="submit">保存配置</button></p>
+  </form>
+
+  <h2>最近配置变更</h2>
+  <p>当前筛选命中：{$history_count} 条；统计项：{$history_stats_count} 项。</p>
+  <form method="get" action="/admin/setting/index">
+    <p>
+      关键词：<input type="text" name="hq" value="{$history_query}" placeholder="键名/IP/时间"> 
+      操作人：<input type="text" name="hop" value="{$history_operator}" placeholder="admin"> 
+      起始时间：<input type="text" name="hs" value="{$history_start}" placeholder="2026-01-01 00:00:00 或 2026-01-01T00:00">
+      结束时间：<input type="text" name="he" value="{$history_end}" placeholder="2026-12-31 23:59:59 或 2026-12-31T23:59">
+      条数：
+      <select name="hlimit">
+        <option value="20" {if $history_limit == '20'}selected{/if}>20</option>
+        <option value="50" {if $history_limit == '50'}selected{/if}>50</option>
+        <option value="100" {if $history_limit == '100'}selected{/if}>100</option>
+      </select>
+      <button type="submit">筛选</button>
+      <a href="/admin/setting/export?{$history_export_query}">导出 CSV</a>
+    </p>
+  </form>
+
+  <table border="1" cellpadding="6" cellspacing="0">
+    <tr><th>时间</th><th>操作人</th><th>IP</th><th>变更</th></tr>
+    {loop items="$history" as="row"}
+      <tr>
+        <td>{$row.time}</td>
+        <td>{$row.username}</td>
+        <td>{$row.ip}</td>
+        <td><pre style="white-space:pre-wrap;margin:0;">{$row.changes}</pre></td>
+      </tr>
+    {/loop}
+    {if $history_count == '0'}
+      <tr><td colspan="4">暂无匹配的配置变更记录</td></tr>
+    {/if}
+  </table>
+
+  <h3>近 N 条变更键名统计（Top 10）</h3>
+  <table border="1" cellpadding="6" cellspacing="0">
+    <tr><th>配置键</th><th>变更次数</th></tr>
+    {loop items="$history_stats" as="stat"}
+      <tr>
+        <td>{$stat.key}</td>
+        <td>{$stat.count}</td>
+      </tr>
+    {/loop}
+    {if $history_stats_count == '0'}
+      <tr><td colspan="2">暂无统计数据</td></tr>
+    {/if}
+  </table>
+
+</body>
+</html>

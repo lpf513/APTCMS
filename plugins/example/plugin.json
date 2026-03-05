@@ -1,0 +1,7 @@
+{
+  "name": "Example Plugin",
+  "version": "1.0.0",
+  "description": "APTCMS 插件扩展示例",
+  "aptcms": ">=1.0.0",
+  "requires": []
+}

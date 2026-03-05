@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><title>{$title}</title></head>
+<body>
+<h1>{$title}</h1>
+<p><a href="/admin/dashboard/index">返回后台</a> | <a href="/admin/article/create">新增文章</a></p>
+
+<form method="get" action="/admin/article/index" style="margin:12px 0;">
+  <input type="text" name="keyword" value="{$keyword}" placeholder="搜索标题/slug/作者">
+  <select name="status">
+    <option value="all" {if $status_filter == 'all'}selected{/if}>全部状态</option>
+    <option value="1" {if $status_filter == '1'}selected{/if}>已发布</option>
+    <option value="0" {if $status_filter == '0'}selected{/if}>草稿</option>
+  </select>
+  <select name="sort">
+    <option value="published_at" {if $sort == 'published_at'}selected{/if}>按发布时间</option>
+    <option value="updated_at" {if $sort == 'updated_at'}selected{/if}>按更新时间</option>
+    <option value="title" {if $sort == 'title'}selected{/if}>按标题</option>
+    <option value="author" {if $sort == 'author'}selected{/if}>按作者</option>
+    <option value="slug" {if $sort == 'slug'}selected{/if}>按Slug</option>
+  </select>
+  <select name="direction">
+    <option value="desc" {if $direction == 'desc'}selected{/if}>降序</option>
+    <option value="asc" {if $direction == 'asc'}selected{/if}>升序</option>
+  </select>
+  <select name="per_page">
+    <option value="10" {if $per_page == '10'}selected{/if}>10/页</option>
+    <option value="20" {if $per_page == '20'}selected{/if}>20/页</option>
+    <option value="50" {if $per_page == '50'}selected{/if}>50/页</option>
+  </select>
+  <button type="submit">筛选</button>
+</form>
+
+<p>总计: {$total}</p>
+
+<form method="post" action="/admin/article/bulk" style="margin:8px 0 12px 0;">
+  <input type="hidden" name="_csrf" value="{$_csrf}">
+  <input type="hidden" name="_return" value="{$return_url}">
+  <select name="bulk_action">
+    <option value="">批量操作</option>
+    <option value="publish">批量发布</option>
+    <option value="draft">批量下线为草稿</option>
+    <option value="delete">批量删除</option>
+  </select>
+  <button type="submit" onclick="return confirm('确认执行批量操作?')">执行</button>
+
+  <table border="1" cellpadding="8">
+    <thead><tr><th><input type="checkbox" onclick="for(const e of document.querySelectorAll('input[name=&quot;slugs[]&quot;]')) e.checked=this.checked"></th><th>标题</th><th>slug</th><th>作者</th><th>发布时间</th><th>状态</th><th>操作</th></tr></thead>
+    <tbody>
+    {if count($rows) == 0}
+      <tr><td colspan="7">暂无数据</td></tr>
+    {else}
+    {loop items="$rows" as="row"}
+      <tr>
+        <td><input type="checkbox" name="slugs[]" value="{$row.slug}"></td>
+        <td>{$row.title}</td>
+        <td>{$row.slug}</td>
+        <td>{$row.author}</td>
+        <td>{$row.published_at}</td>
+        <td>{if ((int) ($row['status'] ?? 1)) === 1}已发布{else}草稿{/if}</td>
+        <td>
+          <a href="/admin/article/edit/{$row.slug}?_return={$return_url}">编辑</a>
+          <button type="submit" formaction="/admin/article/delete/{$row.slug}" formmethod="post" onclick="return confirm('确认删除?')">删除</button>
+        </td>
+      </tr>
+    {/loop}
+    {/if}
+    </tbody>
+  </table>
+</form>
+
+<p>
+{loop items="$page_links" as="p"}
+  {if ($p['current'] ?? '0') == '1'}
+    <strong>[{$p.label}]</strong>
+  {else}
+    <a href="{$p.url}">{$p.label}</a>
+  {/if}
+{/loop}
+</p>
+</body>
+</html>

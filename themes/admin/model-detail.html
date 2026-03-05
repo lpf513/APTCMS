@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><title>{$title}</title></head>
+<body>
+<h1>{$title}</h1>
+<p><a href="/admin/model/index">返回模型列表</a></p>
+<table border="1" cellpadding="8">
+  <thead><tr><th>字段</th><th>类型</th><th>必填</th><th>AI理解</th><th>SEO权重</th><th>GEO权重</th><th>Embedding</th></tr></thead>
+  <tbody>
+  {loop items="$fields" as="field"}
+    <tr>
+      <td>{$field.code}</td>
+      <td>{$field.type}</td>
+      <td>{$field.required}</td>
+      <td>{$field.ai_understand}</td>
+      <td>{$field.seo_weight}</td>
+      <td>{$field.geo_weight}</td>
+      <td>{$field.embedding}</td>
+    </tr>
+  {/loop}
+  </tbody>
+</table>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><title>{$title}</title></head>
+<body>
+<h1>{$title}</h1>
+<p><a href="/admin/dashboard/index">返回后台</a></p>
+<form method="post" action="/admin/plugin/change" style="margin-bottom:12px;">
+  <input type="hidden" name="_csrf" value="{$_csrf}">
+  <input type="hidden" name="action_name" value="install">
+  <label>远程安装 URL：<input type="text" name="url" size="70" placeholder="https://example.com/plugin.zip"></label>
+  <button type="submit">安装插件</button>
+</form>
+<table border="1" cellpadding="8">
+  <thead><tr><th>代码</th><th>名称</th><th>版本</th><th>描述</th><th>启用</th><th>可加载</th><th>说明</th><th>操作</th></tr></thead>
+  <tbody>
+  {loop items="$rows" as="row"}
+    <tr>
+      <td>{$row.code}</td>
+      <td>{$row.name}</td>
+      <td>{$row.version}</td>
+      <td>{$row.description}</td>
+      <td>{$row.enabled}</td>
+      <td>{$row.loadable}</td>
+      <td>{$row.reason}</td>
+      <td>
+        <form method="post" action="/admin/plugin/change" style="display:inline;">
+          <input type="hidden" name="_csrf" value="{$_csrf}">
+          <input type="hidden" name="code" value="{$row.code}">
+          {if $row.lifecycle == 'enabled'}
+            <input type="hidden" name="action_name" value="disable">
+            <button type="submit">禁用</button>
+          {elseif $row.lifecycle == 'disabled'}
+            <input type="hidden" name="action_name" value="enable">
+            <button type="submit">启用</button>
+          {else}
+            <input type="hidden" name="action_name" value="restore">
+            <button type="submit">恢复</button>
+          {/if}
+        </form>
+        <form method="post" action="/admin/plugin/change" style="display:inline;">
+          <input type="hidden" name="_csrf" value="{$_csrf}">
+          <input type="hidden" name="code" value="{$row.code}">
+          <input type="hidden" name="action_name" value="uninstall">
+          <button type="submit">卸载</button>
+        </form>
+        <form method="post" action="/admin/plugin/change" style="display:inline;">
+          <input type="hidden" name="_csrf" value="{$_csrf}">
+          <input type="hidden" name="code" value="{$row.code}">
+          <input type="hidden" name="action_name" value="upgrade">
+          <input type="text" name="url" size="28" placeholder="升级包 URL">
+          <button type="submit">升级</button>
+        </form>
+      </td>
+    </tr>
+  {/loop}
+  </tbody>
+</table>
+</body>
+</html>

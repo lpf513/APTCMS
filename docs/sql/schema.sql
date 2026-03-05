@@ -1,0 +1,84 @@
+-- APTCMS 基础数据库结构（MySQL 8+）
+
+CREATE TABLE IF NOT EXISTS apt_system_setting (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  key_name VARCHAR(128) NOT NULL UNIQUE,
+  value_json JSON NOT NULL,
+  updated_at DATETIME NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS apt_admin_user (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  username VARCHAR(64) NOT NULL UNIQUE,
+  password_hash VARCHAR(255) NOT NULL,
+  role_code VARCHAR(64) NOT NULL,
+  status TINYINT NOT NULL DEFAULT 1,
+  created_at DATETIME NOT NULL,
+  updated_at DATETIME NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS apt_rbac_role_permission (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  role_code VARCHAR(64) NOT NULL,
+  permission_code VARCHAR(128) NOT NULL,
+  UNIQUE KEY uk_role_perm (role_code, permission_code)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS apt_model (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  model_code VARCHAR(64) NOT NULL UNIQUE,
+  model_name VARCHAR(128) NOT NULL,
+  table_name VARCHAR(128) NOT NULL,
+  module_code VARCHAR(64) NOT NULL,
+  template_list VARCHAR(255) NOT NULL,
+  template_detail VARCHAR(255) NOT NULL,
+  created_at DATETIME NOT NULL,
+  updated_at DATETIME NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS apt_model_field (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  model_code VARCHAR(64) NOT NULL,
+  field_code VARCHAR(64) NOT NULL,
+  field_name VARCHAR(128) NOT NULL,
+  field_type VARCHAR(32) NOT NULL,
+  required TINYINT NOT NULL DEFAULT 0,
+  ai_understand TINYINT NOT NULL DEFAULT 0,
+  seo_weight INT NOT NULL DEFAULT 0,
+  geo_weight INT NOT NULL DEFAULT 0,
+  embedding TINYINT NOT NULL DEFAULT 0,
+  sort_order INT NOT NULL DEFAULT 0,
+  UNIQUE KEY uk_model_field (model_code, field_code)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS apt_content_article (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  slug VARCHAR(255) NOT NULL UNIQUE,
+  title VARCHAR(255) NOT NULL,
+  content MEDIUMTEXT NOT NULL,
+  author VARCHAR(128) NOT NULL,
+  published_at DATETIME NOT NULL,
+  status TINYINT NOT NULL DEFAULT 1,
+  created_at DATETIME NOT NULL,
+  updated_at DATETIME NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS apt_seo_meta (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  model_code VARCHAR(64) NOT NULL,
+  content_id BIGINT NOT NULL,
+  title VARCHAR(255) NOT NULL,
+  description VARCHAR(512) NOT NULL,
+  canonical VARCHAR(255) NOT NULL,
+  UNIQUE KEY uk_seo_meta (model_code, content_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS apt_geo_meta (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  model_code VARCHAR(64) NOT NULL,
+  content_id BIGINT NOT NULL,
+  summary TEXT NOT NULL,
+  qa_json JSON NOT NULL,
+  schema_json JSON NOT NULL,
+  UNIQUE KEY uk_geo_meta (model_code, content_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><title>{$title}</title></head>
+<body>
+<h1>{$title}</h1>
+<p><a href="/admin/dashboard/index">返回后台</a></p>
+<table border="1" cellpadding="8">
+  <thead><tr><th>模型标识</th><th>名称</th><th>主表</th><th>模块</th><th>字段数</th><th>操作</th></tr></thead>
+  <tbody>
+  {loop items="$rows" as="row"}
+    <tr>
+      <td>{$row.code}</td>
+      <td>{$row.name}</td>
+      <td>{$row.table}</td>
+      <td>{$row.module}</td>
+      <td>{$row.field_count}</td>
+      <td><a href="/admin/model/detail/{$row.code}">字段详情</a> | <a href="/admin/model/preview/{$row.code}">表单预览</a></td>
+    </tr>
+  {/loop}
+  </tbody>
+</table>
+</body>
+</html>
